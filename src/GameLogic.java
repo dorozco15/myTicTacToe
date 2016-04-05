@@ -8,24 +8,27 @@ public class GameLogic implements Subject {
     private GameReferee gameReferee;
     private ComputerPlayer computerPlayer;
     private GameBoard myGameBoard;
+    private ComputerStrategy myStrategy;
 
-    public GameLogic(){
-        gameReferee = new GameReferee();
-        computerPlayer = new ComputerPlayer();
+    public GameLogic(ComputerStrategy strategyIn){
         myGameBoard = new GameBoard();
+        myStrategy = strategyIn;
+        gameReferee = new GameReferee(myGameBoard);
+        computerPlayer = new ComputerPlayer(myGameBoard, myStrategy);
+
 
     }
     private void getGameStatus(){
 
     }
-    private void getGameBoard(){
-
+    protected GameMemento getGameBoard(){
+        return myGameBoard.storeInMemento();
     }
     private void getGameBoardMemento(){
 
     }
-    private void setGameBoardState(){
-
+    private void setGameBoardState(GameMemento m){
+           // myGameBoard = m.getState();
     }
     private void handlePlayerMove(){
 
