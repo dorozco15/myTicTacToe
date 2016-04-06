@@ -22,6 +22,6 @@ public class GameBoard {
 
     public GameMemento storeInMemento(){
         //print saving to memento
-        return new GameMemento(board);
+        return new GameMemento(this);
     }
 }

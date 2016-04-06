@@ -1,6 +1,7 @@
 /**
  * Created by DanDan on 2016-04-04.
  */
+
 import java.util.ArrayList;
 
 public class GameLogic implements Subject {
@@ -9,29 +10,39 @@ public class GameLogic implements Subject {
     private ComputerPlayer computerPlayer;
     private GameBoard myGameBoard;
     private ComputerStrategy myStrategy;
+    //private boolean gameOver
 
     public GameLogic(ComputerStrategy strategyIn){
-        myGameBoard = new GameBoard();
+        myGameBoard = new GameBoard(); //create a singleton pattern
         myStrategy = strategyIn;
         gameReferee = new GameReferee(myGameBoard);
         computerPlayer = new ComputerPlayer(myGameBoard, myStrategy);
+
 
 
     }
     private void getGameStatus(){
 
     }
-    protected GameMemento getGameBoard(){
+    protected GameBoard getGameBoard(){
+        return myGameBoard;
+    }
+    private GameMemento getGameBoardMemento(){
         return myGameBoard.storeInMemento();
     }
-    private void getGameBoardMemento(){
-
-    }
     private void setGameBoardState(GameMemento m){
-           // myGameBoard = m.getState();
+            myGameBoard = m.getState();
+            gameReferee = new GameReferee(m.getState());
+            computerPlayer = new ComputerPlayer(m.getState(), myStrategy);
     }
-    private void handlePlayerMove(){
-
+    private void handlePlayerMove(GameMove moveIn){
+            boolean valid = gameReferee.checkLegalMove(moveIn);
+            if (valid == true) {
+                myGameBoard.setPeice(moveIn);
+            }
+            else{
+                //send out message that move is illegal
+            }
     }
 
     @Override
