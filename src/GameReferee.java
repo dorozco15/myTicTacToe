@@ -12,12 +12,17 @@ public class GameReferee {
         myGameBoard = gameBoardIn;
 
     }
-    public void checkGameStatus(){
+    public GameStatus checkGameStatus(){
         int[][] positions = this.getGamePositions();
         boolean playerWon = this.playerWon(positions);
         boolean computerWon = this.computerWon(positions);
         boolean checkTie = this.checkTie();
+        GameStatus gameStatus = GameStatus.getInstance();
+        gameStatus.setPlayerWon(playerWon);
+        gameStatus.setComputerWon(computerWon);
+        gameStatus.setTie(checkTie);
 
+        return gameStatus;
     }
     public boolean checkLegalMove(GameMove move){
         GameMove tempMove = myGameBoard.checkPiece(move.getX(), move.getY());
@@ -34,8 +39,12 @@ public class GameReferee {
 
         for (int i = 0; i < 3; i++){
             for (int j = 0; j <3; j++){
-
-                positions[i][j] = myGameBoard.getplayerID(i,j);
+                if (myGameBoard.getplayerID(i,j)!= null) {
+                    positions[i][j] = myGameBoard.getplayerID(i, j);
+                }
+                else {
+                    positions[i][j]= 0;
+                }
             }
         }
         return positions;

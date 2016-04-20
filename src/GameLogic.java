@@ -4,67 +4,84 @@
 
 import java.util.ArrayList;
 
-public class GameLogic implements Subject {
+class GameLogic implements Subject {
     private ArrayList<Observer> observers;
     private GameReferee gameReferee;
     private ComputerPlayer computerPlayer;
     private GameBoard myGameBoard;
-    private ComputerStrategy myStrategy;
+    //private ComputerStrategy myStrategy;
     //private boolean gameOver
 
-    public GameLogic(ComputerStrategy strategyIn){
-        myGameBoard = new GameBoard(); //create a singleton pattern
-        myStrategy = strategyIn;
+    public GameLogic(){
+        myGameBoard = new GameBoard();
         gameReferee = new GameReferee(myGameBoard);
-        computerPlayer = new ComputerPlayer(myGameBoard, myStrategy);
-
+        computerPlayer = new ComputerPlayer(myGameBoard);
+        observers = new ArrayList<Observer>();
 
 
     }
-    private void getGameStatus(){
+    protected GameStatus getGameStatus(){
+        return gameReferee.checkGameStatus();
 
     }
     protected GameBoard getGameBoard(){
         return myGameBoard;
     }
-    private GameMemento getGameBoardMemento(){
+    protected GameMemento getGameBoardMemento(){
         return myGameBoard.storeInMemento();
     }
-    private void setGameBoardState(GameMemento m){
+    protected void setGameBoardState(GameMemento m){
             myGameBoard = m.getState();
             gameReferee = new GameReferee(m.getState());
-            computerPlayer = new ComputerPlayer(m.getState(), myStrategy);
+            computerPlayer = new ComputerPlayer(m.getState());
+
     }
-    private void handlePlayerMove(GameMove moveIn){
+    protected void getComputerMove(){
+        System.out.println("computerPlayer.makeComputerMove()");
+        GameBoard board = computerPlayer.makeComputerMove();
+        if (board != null){
+            myGameBoard = board;
+        }
+        notifyObserver(myGameBoard);
+
+    }
+    protected void handlePlayerMove(GameMove moveIn){
             boolean valid = gameReferee.checkLegalMove(moveIn);
             if (valid == true) {
                 myGameBoard.setPeice(moveIn);
+                notifyObserver(myGameBoard);
             }
             else{
-                //send out message that move is illegal
+
             }
     }
 
-    @Override
+
     //push updates to all observers
-    public void notifyObserver() {
-        for (Observer o : observers){
-            o.update();
+    public void notifyObserver(GameBoard boardIn) {
+        if (boardIn != null) {
+            for (Observer o : observers) {
+                o.update(boardIn);
+
+            }
         }
     }
+    public void notifyObserver(){
 
-    @Override
+    }
+
+
     //add a new observer to the list
     public void register(Observer o) {
         observers.add(o);
-        System.out.println("new observer at index"+ observers.indexOf(o));
+        //System.out.println("new observer at index"+ observers.indexOf(o));
     }
 
-    @Override
+
     //delete an observer from the list
     public void unRegister(Observer o) {
         int index = observers.indexOf(o);
-        System.out.println("observer removed at index: "+ index);
+        //System.out.println("observer removed at index: "+ index);
         observers.remove(index);
     }
 }

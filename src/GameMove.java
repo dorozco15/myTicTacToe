@@ -4,12 +4,13 @@
 public class GameMove {
     private int X, Y;
     private int playerID;
-
+    private Coordinates up, down, left, right, upLeft, upRight, downLeft, downRight ;
     //constructor
     public GameMove(int iDIn, int x, int y){
         playerID = iDIn;
         this.X = x;
         this.Y = y;
+
     }
 
     public void setMoveLocation(int x, int y){
@@ -29,4 +30,5 @@ public class GameMove {
     public int getID(){
         return playerID;
     }
+
 }

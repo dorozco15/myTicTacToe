@@ -4,25 +4,44 @@
 import java.util.List;
 import java.util.ArrayList;
 public class ArrayList2D {
-    List outer;
+    ArrayList<ArrayList<Object>> outer;
 
     public ArrayList2D (){
-        outer = new ArrayList<ArrayList<Object>>();
+        outer = new ArrayList<ArrayList<Object>>(50);
+
+        for (int i = 0; i< 50; i++){
+            outer.add( new ArrayList<>(50));
+        }
 
     }
 
     public int length(){
         return outer.size();
     }
+
     public Object get(int x, int y){
-        return ((ArrayList<ArrayList<Object>>)outer.get(x)).get(y);
+        if (x< outer.size() ) {
+            if (y < outer.get(x).size()) {
+                if (outer.get(x).get(y) == null){
+                    return null;
+                }
+                else{
+                    return outer.get(x).get(y);
+                }
+
+            }
+        }
+        return null;
 
     }
 
     public void set(int x, int y, Object O){
-       // ArrayList<Object> temp = new ArrayList<Object>();
-       // temp.set(y, O);
-        outer.set(x, (new ArrayList<Object>()).set(y, O));
+       if (x< outer.size() ){
+           if (y < outer.get(x).size() ){
+               outer.get(x).set(y,O);
+           }
+       }
+
     }
 
 

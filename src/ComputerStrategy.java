@@ -3,5 +3,6 @@
  */
 public interface ComputerStrategy {
 
-    public void computeMove();
+    public void setNextChain(ComputerStrategy nextStrategyIn);
+    public GameBoard computeMove(GameBoard myGameBoard);
 }
