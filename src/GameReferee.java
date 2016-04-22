@@ -27,9 +27,12 @@ public class GameReferee {
     public boolean checkLegalMove(GameMove move){
         GameMove tempMove = myGameBoard.checkPiece(move.getX(), move.getY());
         if (tempMove == null){
-            return true;
+            return false;
         }
         else{
+            if (tempMove.getID()==0){
+                return true;
+            }
             return false;
         }
     }
@@ -111,7 +114,9 @@ public class GameReferee {
         for (int i = 0; i < 3; i++){
             for (int j = 0; j <3; j++){
                 if (myGameBoard.checkPiece(i,j)!= null) {
-                    count ++;
+                    if (myGameBoard.checkPiece(i,j).getID()!=0) {
+                        count++;
+                    }
                 }
             }
         }

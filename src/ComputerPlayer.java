@@ -6,27 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 public class ComputerPlayer {
     GameBoard myGameBoard;
-    ComputerStrategy strategy;
+    ComputerStrategy winStrategy, noLoseStrategy, smartStrategy, randomStrategy;
 
     List<GameMove> computerMoves = new ArrayList<GameMove>();
 
     //constructor
     public ComputerPlayer (GameBoard gameBoardIn){
         myGameBoard = gameBoardIn;
-        setStrategyChain();
-        strategy = StrategyFactory.getFactory(1).createProduct();
+
+        winStrategy = StrategyFactory.getFactory(1).createProduct();
+        noLoseStrategy = StrategyFactory.getFactory(2).createProduct();
+        smartStrategy = StrategyFactory.getFactory(3).createProduct();
+        randomStrategy = StrategyFactory.getFactory(4).createProduct();
+        winStrategy.setNextChain(noLoseStrategy);
+        noLoseStrategy.setNextChain(smartStrategy);
+        smartStrategy.setNextChain(randomStrategy);
+        //setStrategyChain();
 
     }
-    public GameBoard makeComputerMove(){
+    public GameMove makeComputerMove(){
         System.out.println("strategy.computeMove(myGameBoard)");
-        return strategy.computeMove(myGameBoard);
+        return winStrategy.computeMove(myGameBoard);
+
     }
 
-    //this method simpply assigns the nextStrategy for each of the Strategy Objects
-    private void setStrategyChain(){
-        for (int i=1; i <5; i++){
-            strategy = StrategyFactory.getFactory(i).createProduct();
-            strategy.setNextChain(StrategyFactory.getFactory(i+1).createProduct());
-        }
-    }
+
 }

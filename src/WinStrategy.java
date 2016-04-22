@@ -14,32 +14,34 @@ public class WinStrategy implements ComputerStrategy{
     }
 
     @Override
-    public GameBoard computeMove(GameBoard myGameBoardIn) {
+    public GameMove computeMove(GameBoard myGameBoardIn) {
         myGameBoard = myGameBoardIn;
-        winAlg = new WinAlg(2, myGameBoard);
+        winAlg = new WinAlg(2, myGameBoardIn);
 
-        if(myGameBoard.getComputerMoves() < 2){
+        if(myGameBoardIn.getComputerMoves() < 2){
             if (nextStrategy!= null) {
-                return nextStrategy.computeMove(myGameBoard);
+                System.out.println("next strategy: no lose");
+                return nextStrategy.computeMove(myGameBoardIn);
             }
             return null;
         }
         else{
             for (int i = 0; i <3 ; i++){
                 for (int j = 0; j<3; j++){
-                    if (myGameBoard.checkPiece(i,j).getID()==0){
-                        boolean checkWin = winAlg.checkWin(i,j);
+                    if (myGameBoardIn.checkPiece(i,j).getID()==0){
+                        boolean checkWin = winAlg.checkWin(i,j, myGameBoardIn);
                         if (checkWin == true){
-                            myGameBoardIn.setPeice(moveCreator.create(i,j));
-                            return myGameBoard;
+                            //myGameBoardIn.setPeice(moveCreator.create(i,j));
+                            return moveCreator.create(i,j);
                         }
                     }
                 }
             }
             if (nextStrategy!= null) {
-                return nextStrategy.computeMove(myGameBoard);
+                System.out.println("next strategy: no lose");
+                return nextStrategy.computeMove(myGameBoardIn);
             }
-            return myGameBoardIn;
+            return null;
         }
     }
 

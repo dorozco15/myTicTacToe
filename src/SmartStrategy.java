@@ -14,63 +14,64 @@ public class SmartStrategy implements ComputerStrategy {
     }
 
     @Override
-    public GameBoard computeMove(GameBoard boardIn) {
-        myGameBoard = boardIn;
-        if (myGameBoard.getPlayerMoveCount() == 0 && myGameBoard.getNumberOfTurns() ==0){//if i go first
-             myGameBoard.setPeice(moveCreator.createMove(2,2));
-            return boardIn;
+    public GameMove computeMove(GameBoard boardIn) {
+        boardIn = boardIn;
+        if (boardIn.getPlayerMoveCount() == 0 && boardIn.getComputerMoves() ==0){//if i go first
+             //boardIn.setPeice(moveCreator.createMove(2,2));
+            return moveCreator.createMove(2,2);
         }
-        else if (myGameBoard.getPlayerMoveCount() == 1 && myGameBoard.getComputerMoves()==0){//if i go second
-            GameMove firstMove = (GameMove) myGameBoard.getPlayerMoves().peek();
+        else if (boardIn.getPlayerMoveCount() == 1 && boardIn.getComputerMoves()==0){//if i go second
+            GameMove firstMove = (GameMove) boardIn.getPlayerMoves().peek();
             boolean isCorner = checkCorners(firstMove.getX(), firstMove.getY());
             int nextX;
             int nextY;
             if (isCorner == true){
                 //pick another corner
-                myGameBoard.setPeice(moveCreator.createMove(1,1));
-                return boardIn;
+                //boardIn.setPeice(moveCreator.createMove(1,1));
+                return moveCreator.create(1,1);
             }
             else {
-                myGameBoard.setPeice(moveCreator.createMove(2,2));//pick a corner
-                return myGameBoard;
+               // boardIn.setPeice(moveCreator.createMove(2,2));//pick a corner
+                return moveCreator.create(2,2);
             }
         }
-        else if (myGameBoard.getComputerMoves()==1 && myGameBoard.getPlayerMoveCount()==1){//second time I go
-            GameMove firstMove = (GameMove) myGameBoard.getPlayerMoves().peek();
+        else if (boardIn.getComputerMoves()==1 && boardIn.getPlayerMoveCount()==1){//second time I go
+            GameMove firstMove = (GameMove) boardIn.getPlayerMoves().peek();
             //boolean isCorner = checkCorners(firstMove.getX(), firstMove.getY());
             if (firstMove.getX()!=2 && firstMove.getY()!=0){
-                myGameBoard.setPeice(moveCreator.createMove(2,0));
-                return myGameBoard;
+                //boardIn.setPeice(moveCreator.createMove(2,0));
+                return moveCreator.create(2,0);
             }
             else{
-                myGameBoard.setPeice(moveCreator.createMove(0,2));
-                return myGameBoard;
+                //boardIn.setPeice(moveCreator.createMove(0,2));
+                return moveCreator.create(0,2);
             }
         }
-        else if (myGameBoard.getComputerMoves()==1 && myGameBoard.getPlayerMoveCount()==2){
-            GameMove secondMove = (GameMove) myGameBoard.getPlayerMoves().get(0);
-            GameMove firstMove = (GameMove) myGameBoard.getPlayerMoves().get(1);
+        else if (boardIn.getComputerMoves()==1 && boardIn.getPlayerMoveCount()==2){
+            GameMove secondMove = (GameMove) boardIn.getPlayerMoves().get(0);
+            GameMove firstMove = (GameMove) boardIn.getPlayerMoves().get(1);
 
             //boolean isCorner = checkCorners(firstMove.getX(), firstMove.getY());
-            if ((firstMove.getX()!=0 && firstMove.getY()!=2)&& (secondMove.getX()!=0 && secondMove.getY()!=2)){
-                myGameBoard.setPeice(moveCreator.createMove(0,2));
-                return myGameBoard;
+            if ((firstMove.getX()!=0 && firstMove.getY()!=2)|| (secondMove.getX()!=0 && secondMove.getY()!=2)){
+               // boardIn.setPeice(moveCreator.createMove(0,2));
+                return moveCreator.create(0,2);
             }
-            else if ((firstMove.getX()!=2 && firstMove.getY()!=0)&&(secondMove.getX()!=2 && secondMove.getY()!=0)){
-                myGameBoard.setPeice(moveCreator.createMove(2,0));
-                return myGameBoard;
+            else if ((firstMove.getX()!=2 && firstMove.getY()!=0)||(secondMove.getX()!=2 && secondMove.getY()!=0)){
+                //boardIn.setPeice(moveCreator.createMove(2,0));
+                return moveCreator.create(2,0);
             }
             else{
-                myGameBoard.setPeice(moveCreator.createMove(0,0));
-                return myGameBoard;
+                //boardIn.setPeice(moveCreator.createMove(0,0));
+                return moveCreator.create(0,0);
             }
         }
         else{
 
             if(nextStrategy!= null) {
-                return nextStrategy.computeMove(myGameBoard);
+                System.out.println("next strategy: random strategy");
+                return nextStrategy.computeMove(boardIn);
             }
-            return myGameBoard;
+            return null;
         }
     }
     private boolean checkCorners(int x, int y){

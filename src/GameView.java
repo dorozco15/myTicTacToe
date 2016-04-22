@@ -17,11 +17,9 @@ public class GameView implements Observer{
     }
 
     @Override
-    public void update(GameBoard boardIn) {
-        this.displayGameBoard(boardIn);
-
-    }
-    public void displayGameBoard(GameBoard myGameBoard){
+    public void update(int nextMove, GameBoard myGameBoard) {
+        //this.displayGameBoard(boardIn);
+        System.out.println("displayGameBoard(boardIn)");
         for (int y = 0; y < 3; y++){
             for(int x = 0; x<3; x++){
                 if(myGameBoard.checkPiece(x,y)!=null) {
@@ -37,8 +35,12 @@ public class GameView implements Observer{
                 }
 
             }
-            System.out.print("\n");
+            System.out.print("|\n");
         }
+        return;
+    }
+    public void displayGameBoard(GameBoard myGameBoard){
+
     }
     public void displayMessage(String message){
         System.out.println(message);

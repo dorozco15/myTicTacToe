@@ -4,5 +4,5 @@
 public interface ComputerStrategy {
 
     public void setNextChain(ComputerStrategy nextStrategyIn);
-    public GameBoard computeMove(GameBoard myGameBoard);
+    public GameMove computeMove(GameBoard myGameBoard);
 }

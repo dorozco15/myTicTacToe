@@ -3,7 +3,7 @@
  */
 public class MoveCreator0 extends MoveCreator {
     @Override
-    public GameMove createMove(int x, int y) {
+    public  GameMove createMove(int x, int y) {
         return new GameMove(0, x,y);
     }
 }

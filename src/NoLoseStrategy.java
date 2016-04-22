@@ -14,32 +14,34 @@ public class NoLoseStrategy implements ComputerStrategy {
     }
 
     @Override
-    public GameBoard computeMove(GameBoard boardIn) {
+    public GameMove computeMove(GameBoard boardIn) {
         myGameBoard = boardIn;
-        winAlg = new WinAlg(1, myGameBoard);
-        if (myGameBoard.getPlayerMoveCount() <2){
-            if(nextStrategy!= null) {
-                return nextStrategy.computeMove(myGameBoard);
-            }
-            return myGameBoard;
+        winAlg = new WinAlg(1, boardIn);
+        if (boardIn.getPlayerMoveCount() <2 && nextStrategy != null){
+            System.out.println("next strategy: smart strategy 1");
+
+            return nextStrategy.computeMove(myGameBoard);
+
+
 
         }
         else {
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; i < 3; i++) {
-                    if (myGameBoard.checkPiece(i, j).getID()==0) {
-                        boolean checkPlayerWin = winAlg.checkWin(i, j);
+            for (int y = 0; y < 3; y++) {
+                for (int x = 0; x < 3; x++) {
+                    if (boardIn.checkPiece(x, y).getID()==0) {
+                        boolean checkPlayerWin = winAlg.checkWin(x, y, boardIn);
                         if (checkPlayerWin == true) {
-                            myGameBoard.setPeice(moveCreator.create(i, j));
-                            return myGameBoard;
+                            //myGameBoard.setPeice(moveCreator.create(i, j));
+                            return moveCreator.create(x,y);
                         }
                     }
                 }
             }
             if(nextStrategy!= null) {
-                return nextStrategy.computeMove(myGameBoard);
+                System.out.println("next strategy: smart strategy 2");
+                return nextStrategy.computeMove(boardIn);
             }
-            return myGameBoard;
+            return null;
         }
 
     }

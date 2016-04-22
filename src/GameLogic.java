@@ -9,6 +9,7 @@ class GameLogic implements Subject {
     private GameReferee gameReferee;
     private ComputerPlayer computerPlayer;
     private GameBoard myGameBoard;
+    private int nextMove =0;
     //private ComputerStrategy myStrategy;
     //private boolean gameOver
 
@@ -38,37 +39,67 @@ class GameLogic implements Subject {
     }
     protected void getComputerMove(){
         System.out.println("computerPlayer.makeComputerMove()");
-        GameBoard board = computerPlayer.makeComputerMove();
-        if (board != null){
-            myGameBoard = board;
+        //GameBoard board = computerPlayer.makeComputerMove();
+        GameMove computerMove = computerPlayer.makeComputerMove();
+        if (computerMove != null) {
+            myGameBoard.setPeice(computerMove);
+            System.out.println("computer Move: "+computerMove.getX()+ " "+computerMove.getY());
         }
-        notifyObserver(myGameBoard);
+        for (int y = 0; y < 3; y++){
+            for(int x = 0; x<3; x++){
+                if(myGameBoard.checkPiece(x,y)!=null) {
+                    if (myGameBoard.checkPiece(x,y).getID()== 1){
+                        System.out.print("| X ");
+                    }
+                    else if (myGameBoard.checkPiece(x,y).getID()== 2){
+                        System.out.print("| O ");
+                    }
+                    else{
+                        System.out.print("|   ");
+                    }
+                }
+
+            }
+            System.out.print("\n");
+        }
+
+
+        //if (board != null){
+        //    myGameBoard = board;
+       // }
+        nextMove =1;
+        notifyObserver(nextMove,myGameBoard);
 
     }
     protected void handlePlayerMove(GameMove moveIn){
+        System.out.println("checking legal move...");
             boolean valid = gameReferee.checkLegalMove(moveIn);
             if (valid == true) {
                 myGameBoard.setPeice(moveIn);
-                notifyObserver(myGameBoard);
+                nextMove = 2;
+                notifyObserver(nextMove, myGameBoard);
             }
             else{
+                nextMove =1;
+                //System.out.println("Invalid Move");
+                notifyObserver(nextMove, myGameBoard);
 
             }
     }
 
 
     //push updates to all observers
-    public void notifyObserver(GameBoard boardIn) {
+    public void notifyObserver(int nextMove, GameBoard boardIn) {
         if (boardIn != null) {
             for (Observer o : observers) {
-                o.update(boardIn);
+                o.update(nextMove, boardIn);
 
             }
         }
     }
-    public void notifyObserver(){
+   // public void notifyObserver(){
 
-    }
+    //}
 
 
     //add a new observer to the list

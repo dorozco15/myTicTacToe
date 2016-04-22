@@ -3,23 +3,23 @@
  */
 public class WinAlg {
     private int ID;
-    private GameBoard myGameBoard;
+    private GameBoard gameBoard;
     public WinAlg(int playerID, GameBoard boardIn){
-        myGameBoard = boardIn;
+        gameBoard = boardIn;
         ID = playerID;
     }
-    public boolean checkWin( int x, int y){
+    public boolean checkWin( int x, int y, GameBoard myGameBoard){
 
 
-        boolean horizontalCheck = checkHorizontal(x,y);
-        boolean verticalCheck = checkVertical(x,y);
-        boolean crossCheck = checkCross(x,y);
+        boolean horizontalCheck = checkHorizontal(x,y, myGameBoard);
+        boolean verticalCheck = checkVertical(x,y, myGameBoard);
+        boolean crossCheck = checkCross(x,y, myGameBoard);
         if (horizontalCheck == true || verticalCheck == true || crossCheck== true){
             return true;
         }
         return false;
     }
-    private boolean checkHorizontal(int x, int y){
+    private boolean checkHorizontal(int x, int y, GameBoard myGameBoard){
         if ( x== 0){
             if (myGameBoard.checkPiece(x+1, y).getID() ==ID && myGameBoard.checkPiece(x+2, y).getID() ==ID){
                 //return new Coordinates(x,y);
@@ -40,7 +40,7 @@ public class WinAlg {
         }
         return false;
     }
-    private boolean checkVertical(int x, int y){
+    private boolean checkVertical(int x, int y, GameBoard myGameBoard){
         if ( y== 0){
             if (myGameBoard.checkPiece(x, y+1).getID() ==ID && myGameBoard.checkPiece(x, y+2).getID() ==ID){
                 //return new Coordinates(x,y);
@@ -61,7 +61,7 @@ public class WinAlg {
         }
         return false;
     }
-    private boolean checkCross(int x, int y){
+    private boolean checkCross(int x, int y, GameBoard myGameBoard){
         if (x== 1&& y ==1){
             if (myGameBoard.checkPiece(0,0 ).getID()==ID && myGameBoard.checkPiece(2,2).getID()==ID){
                 return true;//left top to right bottom

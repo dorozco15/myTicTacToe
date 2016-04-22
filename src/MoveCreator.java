@@ -3,7 +3,7 @@
  */
 public abstract class MoveCreator {
     public abstract GameMove createMove(int x, int y);
-    public GameMove create(int x, int y){
+    public  GameMove create(int x, int y){
         return createMove(x, y);
     }
 }

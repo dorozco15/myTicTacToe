@@ -16,22 +16,28 @@ public class RandomStrategy implements ComputerStrategy{
     }
 
     @Override
-    public GameBoard computeMove(GameBoard boardIn) {
+    public GameMove computeMove(GameBoard boardIn) {
         myGameBoard = boardIn;
 
         Random rand = new Random();
         int  n = rand.nextInt(2) ;
         for (int i =0; i<3; i++){
             for(int j=0; j<3; j++){
-                if (myGameBoard.checkPiece(i,j).getID()==0){
-                    GameMove move = moveCreator.createMove(i,j);
-                    possibleMoves.add(move);
+                if (boardIn.checkPiece(i,j)!=null) {
+                    if (boardIn.checkPiece(i, j).getID() == 0) {
+                        GameMove move = moveCreator.createMove(i, j);
+                        possibleMoves.add(move);
+                    }
                 }
             }
         }
-        n = rand.nextInt(possibleMoves.size()-1);
-        GameMove move = possibleMoves.get(n);
-        myGameBoard.setPeice(move);
-        return myGameBoard;
+        if (possibleMoves.size()>0) {
+            n = rand.nextInt(possibleMoves.size() - 1);
+            GameMove move = possibleMoves.get(n);
+            return move;
+        }
+        return null;
+        //myGameBoard.setPeice(move);
+
     }
 }
